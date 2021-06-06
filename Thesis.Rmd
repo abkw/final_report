@@ -213,11 +213,11 @@ Audio is represented in a one-dimensional wave. Typical sample rates for speech 
 
 ## How ASR works  
 
-In a traditional ASR system, we would have an acoustic model whose job is to learn the relationship between a sequence of phonemes and the audio we are hearing. It accomplishes that by transforming speech features to conditional probability distribution over phones, $p(O|W)$. For instance, the pronunciation of the letter "t" at the beginning of the word as "tea" and the end of it such as "spirit", so, what is the probability of this letter being pronounced?  There are different elements involved in ASR systems apart from the acoustic model, that are:   
+In a traditional ASR system, we would have an acoustic model whose job is to learn the relationship between a sequence of phonemes and the audio we are hearing. It accomplishes that by transforming speech features to a conditional probability distribution over phones, $p(O|W)$. For instance, the pronunciation of the letter "t" at the beginning of the word as "tea" and the end of it such as "spirit", so, what is the probability of this letter being pronounced?  There are different elements involved in ASR systems apart from the acoustic model, that are:   
 
 \noindent 
 
-**Pronunciation dictionary** transforms phones to words. Every word has a number of sounds representing it as in English dictionaries. This could be affected by accent variation. In addition to that, the way someone is speaking is also one of the factors effecting pronunciation (spontaneous speech vs. BBC radio news).  
+**Pronunciation dictionary** transforms phones into words. Every word has a number of sounds representing it as in English dictionaries. This could be affected by accent variation. In addition to that, the way someone is speaking is also one of the factors affecting pronunciation (spontaneous speech vs. BBC radio news).  
 **Language model** represents a probability distribution over words sequence, $p(w)$. Language models solve the problem of listening without being able to transform sounds to words or meanings, it assumes audio is grammatically and semantically correct. It provides context to distinguish between words and phrases that sound similar.  
 **Decoder** aggregates all knowledge to a contract search space, in other words, the most probable word sequence. The job of the decoder is to find the sequence of words $(W)$ that maximizes the probability of a particular sequence $(w)$ given the audio $(X)$.  
 
@@ -232,12 +232,12 @@ There have been many successful attempts to build acoustic models for each langu
 knitr::include_graphics("classicway.png")
 ```
 
-Figure \ref{fig:classicway} illustrates the classic way of building speech recognition systems. A generative model of language is built, by producing a certain sequence of words from the language model (rightmost side), and then for each one of the words, the pronunciation model decides how this particular word is spoken by writing in the form of phonemes. The pronunciation models are then fed into an acoustic model which decides how the phoneme sounds. The acoustic model does the description through frames of audio features that is discussed next.  
+Figure \ref{fig:classicway} illustrates the classic way of building speech recognition systems. A generative model of language is built, by producing a certain sequence of words from the language model (rightmost side), and then for each one of the words, the pronunciation model decides how this particular word is spoken by writing in the form of phonemes. The pronunciation models are then fed into an acoustic model which decides how the phoneme sounds. The acoustic model does the description through frames of audio features that are discussed next.  
 
 
 ## Speech Features Extraction  
 
-Speech signals have high variability for many reasons including gender, accent, emotion, and background noise. To reduce the variability of speech signals some feature extraction should be done. There are many feature extraction techniques used in speech recognition systems including: Linear predictive analysis (LPC), Linear predictive cepstral coefficients (LPCC), Perceptual linear predictive coefficients (PLP), Mel-frequency cepstral coefficients (MFCC), Power spectral analysis (FFT), Mel scale cepstral analysis (MEL), Relative spectra filtering of log domain coefficients (RASTA), and First order derivative (DELTA) [@shrawankar2013techniques].  
+Speech signals have high variability for many reasons including gender, accent, emotion, and background noise. To reduce the variability of speech signals some feature extraction should be done. There are many feature extraction techniques used in speech recognition systems including Linear predictive analysis (LPC), Linear predictive cepstral coefficients (LPCC), Perceptual linear predictive coefficients (PLP), Mel-frequency cepstral coefficients (MFCC), Power spectral analysis (FFT), Mel scale cepstral analysis (MEL), Relative spectra filtering of log domain coefficients (RASTA), and First-order derivative (DELTA) [@shrawankar2013techniques].  
 
 Mel-Frequency Cepstral coefficients (MFCC) is arguably the most used feature for ASR including in deep learning (DL) systems. It is based on short-time analysis (around 20–50 ms of sound), assuming speech to be stationary during that period. MFCC shows good performances on clean conditions, but it is not robust against speech distortions such as background noise, reverberation, channel distortion, etc. One of the reasons is because the log function is overly sensitive for low energy spectra where much of speech information resides [@8949593].  
 
@@ -247,18 +247,18 @@ Mel-Frequency Cepstral coefficients (MFCC) is arguably the most used feature for
 C(x(t)) = F^{-1}[log(F[x(t)])]
 \end{align}
 
-Equation \ref{eq:2} shows how we can compute *cepstrum* on top of which MFCC is built, where $x(t)$ is a signal in time domain (normal wave form), $F[x(t)]$ is the discrete fourier transform which generates a spectrum by moving from time domain to frequency domain [@4320436]. Fourier Transform transforms a function of time $x(t)$ to a function of frequency $F[x(t)]$. Then we apply logarithm on the amplitude of the spectrum for more computational efficiency [@logft]. Finally, we apply an inverse fourier transform to the log amplitude spectrum to produce cepstrum.    
+Equation \ref{eq:2} shows how we can compute *cepstrum* on top of which MFCC is built, where $x(t)$ is a signal in time domain (normal waveform), $F[x(t)]$ is the discrete fourier transform which generates a spectrum by moving from time domain to frequency domain [@4320436]. Fourier Transform transforms a function of time $x(t)$ to a function of frequency $F[x(t)]$. Then we apply logarithm on the amplitude of the spectrum for more computational efficiency [@logft]. Finally, we apply an inverse fourier transform to the log amplitude spectrum to produce cepstrum.    
 
 
 ## Speech Classification  
 
-In ASR systems (illusterated in figure \ref{fig:classicway}), structured sequence data is classified, where the label sequences are inferred from the observation sequences. An accurate ASR system is a system that performs with high accuracy in speech recognition tasks by classifying label sequences (sentences) correctly from the observation sequences (wave forms). We can model the posterior probability of the classes directly in a discriminative model, whereas, in a generative model Bayes' rule is used.    
+In ASR systems (illustrated in figure \ref{fig:classicway}), structured sequence data is classified, where the label sequences are inferred from the observation sequences. An accurate ASR system is a system that performs with high accuracy in speech recognition tasks by classifying label sequences (sentences) correctly from the observation sequences (waveforms). We can model the posterior probability of the classes directly in a discriminative model, whereas, in a generative model Bayes' rule is used.    
 
 ### Generative vs. discriminative classifier  
 
-The model is to model the distribution of words in the word space. ASR systems infers the sentences acoustic waveforms. Speech signals are sequential in nature, and that is where generative models come into view by using Bayes' rule to combine Hidden Markov Model (HMM) acoustic models and N-gram language models. On the contrary, the machine learning and natural language processing (NLP) research areas are increasingly dominated by discriminative approaches, where the class posteriors are directly modeled [@6296527]. For instance, when a child is told to "bring that cup", the child does not actually know unless one points to the cup, discriminative models would tell the child the difference between the cup and the other objects that might exist.  
+The model is to model the distribution of words in the word space. ASR systems infer the sentences' acoustic waveforms. Speech signals are sequential in nature, and that is where generative models come into view by using Bayes' rule to combine Hidden Markov Model (HMM) acoustic models and N-gram language models. On the contrary, the machine learning and natural language processing (NLP) research areas are increasingly dominated by discriminative approaches, where the class posteriors are directly modeled [@6296527]. For instance, when a child is told to "bring that cup", the child does not actually know unless one points to the cup, discriminative models would tell the child the difference between the cup and the other objects that might exist.  
 
-Generative model classification use Bayes' rule e.g., for HMMs, and it can be split into a language model, the prior, $P(w)$ that yields a probability of any sentence, and an acoustic model $p(O_{1:T}| \lambda^{(w)})$ which is the likelihood that a sentence $w$ generated the observations $O_{1:T}$ with model parameters $\lambda^{(w)}$. We can, as a result obtain the posterior by applying Bayes' rule:  
+Generative model classification use Bayes' rule e.g., for HMMs, and it can be split into a language model, the prior, $P(w)$ that yields a probability of any sentence, and an acoustic model $p(O_{1:T}| \lambda^{(w)})$ which is the likelihood that a sentence $w$ generated the observations $O_{1:T}$ with model parameters $\lambda^{(w)}$. We can, as a result, obtain the posterior by applying Bayes' rule:  
 
 \begin{align}
 P(w|O_{1:T}, \lambda) = \frac{p(O_{1:T}|w, \lambda^{(w)}) P(w)}{\sum_{w}p(O_{1:T}|w, \lambda^{(w)})P(w)}
@@ -282,20 +282,20 @@ knitr::include_graphics("discriminative.png")
 
 An acoustic model works as a human ear. Nearly four decades ago, the expectation maximization (EM) algorithm was introduced as a principal means for training HMMs which is a Markov Chain where the output symbols or probabilistic functions that describe them, are connected either to the states or to the transitions between states [@4815544]. Both Hidden Markov Models (HMM) and Gaussian Mixture Models (GMM) had been, before the era of deep learning, must-learn technologies when dealing with speech signals.  
 
-HMMs are used as acoustic models to calculate the likelihood of different classes generating observation sequences (sentences). HMM model consists of hidden variables (States) and observables, a Markov chain also contain the probability of transitioning from one state to another. The modeling part, that is done by HMM, is for transitioning between phonemes and the corresponding observable. GMM plays the role of emission probability distribution which results in mixture emissions. Figure \ref{fig:markov} shows Markov process and the transitioning between different states.  
+HMMs are used as acoustic models to calculate the likelihood of different classes generating observation sequences (sentences). HMM model consists of hidden variables (States) and observables, a Markov chain also contains the probability of transitioning from one state to another. The modeling part, that is done by HMM, is for transitioning between phonemes and the corresponding observable. GMM plays the role of emission probability distribution which results in mixture emissions. Figure \ref{fig:markov} shows Markov process and the transitioning between different states.  
 
 ```{r markov, fig.align = 'center',  echo=F, fig.cap='Markov Process and Transition Matrix'}
 knitr::include_graphics("markov.jpeg")
 ```
 
 
-Gaussian Mixture Models (GMMs) are, on the other hand, used to model the distribution of features for phonemes. They allow to model features with a few possible values, which provides flexibility in speech variations. In Figure \ref{fig:gmm}, it can be seen that when we try to model the phone "sh" using gaussian model, it fixes the utterance of that phoneme and does not allow for speech variations, whereas, when GMM is used for the same purpose, it allows different pronunciations for the same phone, which is more realistic for speech recognition.   
+Gaussian Mixture Models (GMMs) are, on the other hand, used to model the distribution of features for phonemes. They allow modelling features with a few possible values, which provides flexibility in speech variations. In Figure \ref{fig:gmm}, it can be seen that when we try to model the phone "sh" using gaussian model, it fixes the utterance of that phoneme and does not allow for speech variations, whereas, when GMM is used for the same purpose, it allows different pronunciations for the same phone, which is more realistic for speech recognition.   
 
 ```{r gmm, fig.align = 'center',  echo=F, fig.cap='Gaussian vs GMM acoustic model when modeling "sh"'}
 knitr::include_graphics("gmm.jpeg")
 ```
 
-**Pronunciation Model** For obtaining a good estimate for the relationship between pronounced speech and the parts of words, statistical models require adequate number of samples. In order to share information across words to avoid training statistical models on each word (which is not feasible), the pronunciation model is used.  
+**Pronunciation Model** For obtaining a good estimate for the relationship between pronounced speech and the parts of words, statistical models require an adequate number of samples. In order to share information across words to avoid training statistical models on each word (which is not feasible), the pronunciation model is used.  
 
 \begin{align}
 \label{eq:3}
@@ -325,7 +325,7 @@ Where $P(Q|W)$ is the pronunciation model [@pronun].
 W^* = \underset{W}{\operatorname{argmax}} P(X|W) P(W)
 \end{align}
 
-The maximum likelihood estimate is calculated for estimating sequences, and is given by:  
+The maximum likelihood estimate is calculated for estimating sequences and is given by:  
 
 \begin{align}
 P(w_i|w_1,...,w_{i-1}) = \frac{C(w_1, ..., w_i)}{\sum_v(C(w_1,...,w{i-1}v))}
@@ -351,19 +351,19 @@ DNNs have proven more successful in speech recognition than Gaussian Mixture Mod
 
 ASR systems rely on modern pipelines that are composed of many processing stages, including specialized input features [@862023], acoustic models [@sak2015fast], and Hidden Markov Models (HMMs) [@5745027]. Deep learning takes the place of these processing stages and achieves higher performance than traditional methods on hard speech [@hannun2014deep]. An end-to-end deep learning approach can replace entire pipelines of hand-engineered components with neural networks, end to end learning allows us to handle a diverse variety of speech including noisy environments, accents, and different languages [@amodei2015deep]. When deep neural networks are used, a considerable improvement is acquired compared to that of GMM. An acoustic model can get between 10 and 20 percent relative improvement in accuracy [@inproceedings], which is a huge jump in speech recognition and highly noticeable to a speaker. Achieving such high accuracy in speech recognition tasks by using neural networks is, in some sense, the first generation of deep learning in speech recognition.  
 
-The hybrid deep neural network (DNN)- hidden Markov model (HMM) has been shown to significantly improve speech recognition performance over the conventional Gaussian mixture model (GMM)-HMM [@6857341]. This could be attributed to the fact that DNN are capable of modeling complex correlations in speech features.  
+The hybrid deep neural network (DNN)- hidden Markov model (HMM) has been shown to significantly improve speech recognition performance over the conventional Gaussian mixture model (GMM)-HMM [@6857341]. This could be attributed to the fact that DNNs are capable of modeling complex correlations in speech features.  
 
 
 \subsubsection{Convolutional Neural Networks for Speech Recognition}  
 \label{section:cnn}  
 
-Convolutional Neural Networks (CNNs or ConvNet) are a class of deep neural network that have many signal processing and computer vision applications including speech recognition [@6857341]. Rather than using fully connected hidden layers that is similar to DNNs, CNNs present a network structure consisting of *convolutions* and *pooling* layers. The term convolution refers to combining two functions to yield a third function, it is applied in CNNs to the input data by using a kernel or filter to produce a feature map.  A *kernel* refers to the sets of learnable parameters applied in convolution operation. Whereas, a *stride* is the distance between two successive kernel positions [@Yamashita2018]. Figure \ref{fig:kernel} shows how a simple $3\times3$ kernel moves in a $5\times5$ input tensor with one stride [@kernel], the kernel moves across the input tensor one step to the right (the number of strides) and it multiplies element wise.  
+Convolutional Neural Networks (CNNs or ConvNet) are a class of deep neural network that have many signal processing and computer vision applications including speech recognition [@6857341]. Rather than using fully connected hidden layers that is similar to DNNs, CNNs present a network structure consisting of *convolutions* and *pooling* layers. The term convolution refers to combining two functions to yield a third function, it is applied in CNNs to the input data by using a kernel or filter to produce a feature map.  A *kernel* refers to the sets of learnable parameters applied in convolution operation. Whereas, a *stride* is the distance between two successive kernel positions [@Yamashita2018]. Figure \ref{fig:kernel} shows how a simple $3\times3$ kernel moves in a $5\times5$ input tensor with one stride [@kernel], the kernel moves across the input tensor one step to the right (the number of strides) and it multiplies element-wise.  
 
 ```{r kernel, fig.align = 'center',  echo=F, fig.cap='A 3$\\times$3 kernel with a 5$\\times$5 input tensor and one stride'}
 knitr::include_graphics("kernel.png")
 ```
 
-When using CNNs for speech recognition, speech signals can either be transformed into spectrograms (images) or used as 1-d waves to organize speech features into feature maps that are suitable for CNNs. Assuming input feature maps are all one dimensional, each unit of one feature map in the colvolution ply can be computed as:  
+When using CNNs for speech recognition, speech signals can either be transformed into spectrograms (images) or used as 1-d waves to organize speech features into feature maps that are suitable for CNNs. Assuming input feature maps are all one dimensional, each unit of one feature map in the convolution ply can be computed as:  
 
 
 \begin{align}
@@ -371,21 +371,21 @@ When using CNNs for speech recognition, speech signals can either be transformed
 q_{j,m} = \sigma(\sum_{i=1}^I\sum_{n=1}^F o_{i,n+m-1}w_{i,j,n}+w_{0,j}), \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (j = 1,...,J)
 \end{align}
 
-Where $o_{i,m}$ is the \emph{m}-th unit of the \emph{i}-th input feature map, $O_{i}$, $q_{j,m}$ is the \emph{m}-th unit of the \emph{j}-th feature map $Q_j$ in the colvolution ply, $w_{i,j,n}$ is the \emph{n}-th element of the weight vector, $w_{i,j}$, that connects the \emph{i}-th input feature map to the \emph{j}th feature map of the convolution ply, $F$ is the *filter size*, which determines the number of frequency bands in each input feature map that each unit in the convolution ply receives as input. [@6857341]. Equation  \ref{eq:7} can concisely be written in matrix form using the convolution operator $*$ as follows:  
+Where $o_{i,m}$ is the \emph{m}-th unit of the \emph{i}-th input feature map, $O_{i}$, $q_{j,m}$ is the \emph{m}-th unit of the \emph{j}-th feature map $Q_j$ in the convolution ply, $w_{i,j,n}$ is the \emph{n}-th element of the weight vector, $w_{i,j}$, that connects the \emph{i}-th input feature map to the \emph{j}th feature map of the convolution ply, $F$ is the *filter size*, which determines the number of frequency bands in each input feature map that each unit in the convolution ply receives as input. [@6857341]. Equation  \ref{eq:7} can concisely be written in matrix form using the convolution operator $*$ as follows:  
 
 \begin{align}
 \label{eq:9}
 Q_j = \sigma(\sum_{i=1}^I O_i * \textbf{w}_{i,j}), \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (j = 1,...,J)
 \end{align}
 
-Where $O_i$ is the \emph{i}-th input feature map and $\textbf{w}_{i,j}$ represents each local weight matrix. Figure \ref{fig:fm} shows a pair of a convolution ply (on the left side) and a pooling ply (right most), wherein, the mapping from either the input layer or the pooling ply to a convolution ply is based on equation \ref{eq:9} [@6857341].  
+Where $O_i$ is the \emph{i}-th input feature map and $\textbf{w}_{i,j}$ represents each local weight matrix. Figure \ref{fig:fm} shows a pair of a convolution ply (on the left side) and a pooling ply (rightmost), wherein, the mapping from either the input layer or the pooling ply to a convolution ply is based on equation \ref{eq:9} [@6857341].  
 
 ```{r fm, fig.align = 'center',  echo=F, fig.cap='Two convolution plys and a pooling ply'}
 knitr::include_graphics("fm.png")
 ```
  
  
-The limitation of this feature map is seen when a different feature map is produced by a small stride (movement) in the feature position. This limitation is addressed by *down sampling*, and it is applied when important structural elements are included in a lower resolution signal which is generated from the input signal. To resolve this issue, a layer of pooling is added after the convolutional layer. Pooling selects an operation to be applied to the resulting feature maps, the result of this operation is a reduction in size of each feature map. When using CNNs in image processing, the input is a (2-D) array of pixel values at *x* and *y* axes, whereas, in speech signals, the input could either be a spectrogram (Figure \ref{fig:spectrogram}) or it could take a wave form. The temporal behavior of speech signals makes it a fertile area for Temporal Convolutional Network (TCN) that uses the covolutions for sequential speech data [@lemaire2019temporal].   
+The limitation of this feature map is seen when a different feature map is produced by a small stride (movement) in the feature position. This limitation is addressed by *downsampling*, and it is applied when important structural elements are included in a lower resolution signal which is generated from the input signal. To resolve this issue, a layer of pooling is added after the convolutional layer. Pooling selects an operation to be applied to the resulting feature maps, the result of this operation is a reduction in the size of each feature map. When using CNNs in image processing, the input is a (2-D) array of pixel values at *x* and *y* axes, whereas, in speech signals, the input could either be a spectrogram (Figure \ref{fig:spectrogram}) or it could take a waveform. The temporal behavior of speech signals makes it a fertile area for Temporal Convolutional Network (TCN) that uses the convolutions for sequential speech data [@lemaire2019temporal].   
 
 
 ```{r spectrogram, fig.align = 'center',  echo=F, fig.cap='A visual representation of the spectrum of frequencies of speech signal varying with time (Spectrogram) that is fed to CNNs'}
@@ -395,7 +395,7 @@ knitr::include_graphics("spectrogram.png")
 
 ### Recurrent Neural Networks (RNNs) for Speech Recognition  
 
-An RNN is a class of Artificial Neural Networks (ANNs) that uses sequential data or time series data. RNNs do not assume independence between current input and previous input, the output of RNNs depends on the memorized prior sequence. For a given input sequence $x = (x_1, ..., x_T)$, a standard recurrent neural network computes the hidden vector sequence $h = (h_1, ..., h_T)$ and outputs vector sequence $y = (y_1, ..., y_T)$ by iterating the following equations from $t= 1$ to $T$:  
+An RNN is a class of Artificial Neural Networks (ANNs) that uses sequential data or time series data. RNNs do not assume independence between the current input and previous input, the output of RNNs depends on the memorized prior sequence. For a given input sequence $x = (x_1, ..., x_T)$, a standard recurrent neural network computes the hidden vector sequence $h = (h_1, ..., h_T)$ and outputs vector sequence $y = (y_1, ..., y_T)$ by iterating the following equations from $t= 1$ to $T$:  
 
 
 \begin{align}
@@ -417,7 +417,7 @@ h_t = o_t \tanh(c_t)
 \end{align}
 
 
-where $\sigma$ is the logistic sigmoid function, and $i$, $f$, $o$ and $c$ are input gate, forget gate, output gate and cell activation vectors, respectively. Figure \ref{fig:rnn} illustrates the Bidirectional RNNs (BRNNs) that computes the forward hidden sequence $\overrightarrow{h}$, the backward hidden sequence $\overleftarrow{h}$ and the output sequence $y$ by iterating the backward layer from $t = T$ to 1, the forward layer from $t = 1$ to $T$ and then updating the output layer. If BRNN is combined with LSTM, it results in bidirectional LSTM which accesses both input directions.     
+where $\sigma$ is the logistic sigmoid function, and $i$, $f$, $o$ and $c$ are input gate, forget gate, output gate and cell activation vectors, respectively. Figure \ref{fig:rnn} illustrates the Bidirectional RNNs (BRNNs) that computes the forward hidden sequence $\overrightarrow{h}$, the backward hidden sequence $\overleftarrow{h}$ and the output sequence $y$ by iterating the backward layer from $t = T$ to 1, the forward layer from $t = 1$ to $T$, and then updating the output layer. If BRNN is combined with LSTM, it results in bidirectional LSTM which accesses both input directions.     
 
 \begin{align}
 \overrightarrow{h_t} = \mathcal{H}(W_{x\overrightarrow{h}} x_t + W_{\overrightarrow{h}\overrightarrow{h}} \overrightarrow{h_{t-1}} + b_{\overrightarrow{h}})\\
@@ -440,11 +440,11 @@ knitr::include_graphics("rnn.png")
 The concept of transformers was proposed in 2017 for Natural Language Processing (NLP) [@vaswani2017attention]. It has, since then, been heavily used to solve different NLP tasks such as text classification and text analysis. Transformers achieved 28.4 Bilingual Evaluation Understudy (BLEU) on the Workshop on Statistical Machine Translation (WMT) dataset 2014, English-to-German translation task, improving over the existing best results, including ensembles, by over 2 BLEU [@vaswani2017attention]. In machine translation systems, BLUE is a performance evaluation technique that compares the candidate translation, which is done by the machine, and the reference translation or the human-generated translation. For speech recognition, Transformers have achieved competitive recognition accuracy compared to RNN-based counterparts within both end-to-end and hybrid frameworks [@lu2020exploring]. Transformers are similar to RNNs in that they handle sequential input data, but they, yet differ from RNNs in that they do not require sequential data to be processed in order. They introduced an attention mechanism that learns contextual relations between words (or sub-words) in a text. The Transformer, in its most basic form, consists of an encoder and a decoder, the encoder reads the text input by mapping an input sequence of symbol representation $(x_1,...,x_n)$ to a sequence of continuous representation $z = (z_1,...,z_n)$ whereas, the decoder produces a prediction for the task by generating an output sequence $(y_1, ...,y_m)$ from the input $z$ it receives from the encoder. As opposed to directional models, which read the text input sequentially (left-to-right or right-to-left), the Transformer encoder reads the entire sequence of words at once. This bidirectional characteristic allows the model to learn the context of a word based on all of its surroundings (left and right of the word) [@towardsdatasience].
 
 
-In speech recognition tasks, Transformers can achieve around 6% relative word error rate (WER) reduction compared to the bidirectional LSTM (BLSTM) baseline in the offline fashion, where the entire speech utterance is required as input for the encoder-decoder architecture. On the other hand, in the streaming fashion, where the entire speech is not available, Transformer-XL is comparable to latency-controlled BLSTM (LCBLSTM) with 800 millisecond latency constraint [@lu2020exploring]. Transformer-XL was introduced in 2019 for the purpose of enabling learning dependency without the fixed length limitation and by keeping the temporal coherence intact. It does that by by using a segment-level recurrence mechanism and a novel positional encoding scheme [@dai2019transformerxl].  
+In speech recognition tasks, Transformers can achieve around 6% relative word error rate (WER) reduction compared to the bidirectional LSTM (BLSTM) baseline in the offline fashion, where the entire speech utterance is required as input for the encoder-decoder architecture. On the other hand, in the streaming fashion, where the entire speech is not available, Transformer-XL is comparable to latency-controlled BLSTM (LCBLSTM) with 800-millisecond latency constraint [@lu2020exploring]. Transformer-XL was introduced in 2019 for the purpose of enabling learning dependency without the fixed-length limitation and by keeping the temporal coherence intact. It does that by using a segment-level recurrence mechanism and a novel positional encoding scheme [@dai2019transformerxl].  
 
 ## Self-supervised Learning (SSL)  
 
-Neural networks depend on enormous quantities of labeled data to learn, and this scenario doesn't resemble the way humans learn. Self-supervised learning has arisen as a machine learning worldview to solve the problem of labeled data scarcity. It enables learning general data representations from unlabeled examples in a supervised learning task and fine-tune the model on labeled data [@2020arXiv200611477B] by adding an additional predictor to the model that takes in the representations learned by SSL. SSL provides, when pre-training on unlabeled data, effective contextual audio representation. Additionally, by not relying on labels, SSL can avoid many problems related to labels or audio files corruption, and thus, increase model robustness. Moreover, self-supervision greatly benefits out-of-distribution detection on difficult, near-distribution outliers, to an extent that it exceeds the performance of fully supervised methods [@2019arXiv190612340H]. This has been proven successful for natural language processing [@peters2018deep; @radford2018improving; @devlin2019bert] and is an active area of research in computer vision [@2020arXiv200611477B].  
+Neural networks depend on enormous quantities of labeled data to learn, and this scenario doesn't resemble the way humans learn. Self-supervised learning has arisen as a machine learning worldview to solve the problem of labeled data scarcity. It enables learning general data representations from unlabeled examples in a supervised learning task and fine-tunes the model on labeled data [@2020arXiv200611477B] by adding a predictor to the model that takes in the representations learned by SSL. SSL provides, when pre-training on unlabeled data, effective contextual audio representation. Additionally, by not relying on labels, SSL can avoid many problems related to labels or audio files corruption, and thus, increase model robustness. Moreover, self-supervision greatly benefits out-of-distribution detection on difficult, near-distribution outliers, to an extent that it exceeds the performance of fully supervised methods [@2019arXiv190612340H]. This has been proven successful for natural language processing [@peters2018deep; @radford2018improving; @devlin2019bert] and is an active area of research in computer vision [@2020arXiv200611477B].  
 
 The elemental idea for SSL is to form some auxiliary pre-text task from the input data and then feed it to the model such that while solving the auxiliary task the model learns the underlying structure of the data (object structure in an image). The model is trained to distinguish a sample $\mathrm{z}_{i+k}$ that is $k$ steps ahead of distractor samples $\hat{\mathrm{z}}$ drawn from a distribution $p_n$, it performs this distinction by minimizing the contrastive loss (covered in the next section) for steps $k = 1,...,K$.    
 
@@ -487,7 +487,7 @@ knitr::include_graphics("framework2.png")
 ```
 
 
-Figure \ref{fig:framework} illustrates how the model learns contextualized speech representation. The model starts with raw audio (a 1-d wave form) that is used to feed a multi-layer feature encoder which learns the representations ($\mathcal{Z}$). These representations are vectors representing different wave segments, and are, then, transformed into quantized representations $(\mathcal{Q})$ that are extracted from multiple codebooks using product quantization [@5432202]. These codebooks (illustrated in figure \ref{fig:codebook}) are vectors in a $d$-dimensional space containing vectors of codewords [@dieleman2018challenge]. Given multiple codebooks $G$ with $V$ entries $e \in \mathbb{R}^{v\times{d}/G}$ one entry is chosen from each codebook, the resulted vectors $e_1,...,e_G$ are concatenated and a linear transformation is applied $\mathbb{R}^d \to \mathbb{R}^f$ to obtain $q \in \mathbb{R}^f$ [@2020arXiv200611477B]. The extraction mechanism depends on the shortest distance between the $z$ vector and $q$ vectors. A Transformer is used to learn contextualized representation by masking out some of the vectors $(\mathcal{Q})$ and measuring the distance between the context $(\mathcal{C})$ and the quantized $(\mathcal{Q})$ representations of those vectors by calculating a contrastive loss.  
+Figure \ref{fig:framework} illustrates how the model learns contextualized speech representation. The model starts with raw audio (a 1-d waveform) that is used to feed a multi-layer feature encoder that learns the representations ($\mathcal{Z}$). These representations are vectors representing different wave segments, and are, then, transformed into quantized representations $(\mathcal{Q})$ that are extracted from multiple codebooks using product quantization [@5432202]. These codebooks (illustrated in figure \ref{fig:codebook}) are vectors in a $d$-dimensional space containing vectors of codewords [@dieleman2018challenge]. Given multiple codebooks $G$ with $V$ entries $e \in \mathbb{R}^{v\times{d}/G}$ one entry is chosen from each codebook, the resulted vectors $e_1,...,e_G$ are concatenated and a linear transformation is applied $\mathbb{R}^d \to \mathbb{R}^f$ to obtain $q \in \mathbb{R}^f$ [@2020arXiv200611477B]. The extraction mechanism depends on the shortest distance between the $z$ vector and $q$ vectors. A Transformer is used to learn contextualized representation by masking out some of the vectors $(\mathcal{Q})$ and measuring the distance between the context $(\mathcal{C})$ and the quantized $(\mathcal{Q})$ representations of those vectors by calculating a contrastive loss.  
 
 
 ```{r codebook, fig.align = 'center',  echo=F, fig.cap='Codebook generation using Gumbel-Softmax quantization'}
@@ -504,7 +504,7 @@ Where $v = -\mathrm{log}(-\mathrm{log}(u))$ and $u$ are uniform samples from $\m
 
 ### Transfer Learning (TL)  
 
-Transfer learning is to use a model, that was used for a specific task, for a new related task as a starting point. It stores the knowledge it gained while solving the initial task, and then uses that knowledge for a different but related task. In speech recognition, we can refer to the initial task as "source language" and the new task as "target language", thus, we can initialize the network for the target language with a pre-trained model from the source language. TL has shown to be able to improve the performance and considerably decrease WER [@joshi2020transfer].  
+Transfer learning is to use a model, that was used for a specific task, for a new related task as a starting point. It stores the knowledge it gained while solving the initial task, and then uses that knowledge for a different but related task. In speech recognition, we can refer to the initial task as "source language" and the new task as "target language", thus, we can initialize the network for the target language with a pre-trained model from the source language. TL has been shown to be able to improve the performance and considerably decrease WER [@joshi2020transfer].  
 
 
 ### Pre-trained Models  
@@ -512,20 +512,20 @@ Transfer learning is to use a model, that was used for a specific task, for a ne
 
 #### WAV2VEC Pre-training   \newline \newline
 
-*wav2vec* is a model for unsupervised pre-training tasks in speech recognition developed by Facebook AI. It is a multi-layer convolutional neural network (CNN) that receives raw audio as input and outputs general representations for the raw audio, which can subsequently be used as input to ASR systems. WAV2VEC reduces WER of a strong character-based log-mel filterbank baseline [@m2014choice] by up to 36 % when only a few hours of transcribed data is available [@schneider2019wav2vec]. Figure \ref{fig:wav2vec} shows the architecture of WAV2Vec that takes the raw audio as input to a fully connected CNN to solve next time prediction task.  
+*wav2vec* is a model for unsupervised pre-training tasks in speech recognition developed by Facebook AI. It is a multi-layer convolutional neural network (CNN) that receives raw audio as input and outputs general representations for the raw audio, which can subsequently be used as input to ASR systems. WAV2VEC reduces WER of a strong character-based log-mel filterbank baseline [@m2014choice] by up to 36 % when only a few hours of transcribed data is available [@schneider2019wav2vec]. Figure \ref{fig:wav2vec} shows the architecture of WAV2Vec that takes the raw audio as input to a fully connected CNN to solve the next time prediction task.  
 
 
 ```{r wav2vec, fig.align = 'center',  echo=F, fig.cap='WAV2VEC Fully Convolutional Architecture [35]'}
 knitr::include_graphics("wav2vec.png")
 ```
 
-The parameterized encoder network $f : \mathcal{X} \mapsto \mathcal{Z}$ is applied on the raw audio samples $x_i \in \mathcal{X}$. With kernel sizes of (10, 8, 4, 4, 4) and strides of (5, 4, 2, 2, 2), The output of the encoder is a low frequency feature representation $\mathrm{z}_i \in \mathcal{Z}$ which encodes about 30 milliseconds of 16 kHz of audio and the striding results in representations $\mathrm{z}_i$ every 10ms [@schneider2019wav2vec].  
+The parameterized encoder network $f : \mathcal{X} \mapsto \mathcal{Z}$ is applied on the raw audio samples $x_i \in \mathcal{X}$. With kernel sizes of (10, 8, 4, 4, 4) and strides of (5, 4, 2, 2, 2), The output of the encoder is a low-frequency feature representation $\mathrm{z}_i \in \mathcal{Z}$ which encodes about 30 milliseconds of 16 kHz of audio and the striding results in representations $\mathrm{z}_i$ every 10ms [@schneider2019wav2vec].  
 
-The output of the encoder network is then fed into a context network $g : \mathcal{Z} \mapsto \mathcal{C}$ which can be seen in figure \ref{fig:framework}, and that has nine layers with kernel size three, stride one, and 210 ms receptive field. The context network outputs a single contextualized tensor $c_i = g(\mathrm{z_i}... \mathrm{z_{i-v}})$ from the multiple latent representations $\mathrm{z_i}... \mathrm{z_{i-v}}$ obtained from the encoder network. This context network follows the Transformer architecture [@2020arXiv200611477B]. An output layer is added on top of the transformer network for the purpose of fine-tuning the model on labeled data and making predictions.     
+The output of the encoder network is then fed into a context network $g : \mathcal{Z} \mapsto \mathcal{C}$ which can be seen in figure \ref{fig:framework}, and that has nine layers with kernel size three, stride one, and 210 ms receptive field. The context network outputs a single contextualized tensor $c_i = g(\mathrm{z_i}... \mathrm{z_{i-v}})$ from the multiple latent representations $\mathrm{z_i}... \mathrm{z_{i-v}}$ obtained from the encoder network. This context network follows the Transformer architecture [@2020arXiv200611477B]. An output layer is added on top of the transformer network to fine-tune the model on labeled data and make predictions.     
 
 
 #### Cross-lingual Speech Representation (XLSR)   \newline \newline
-As opposed to pre-training speech models on one language (monolingual pre-training), it is also feasible to make use of data from other languages for performance improvement. This has worked well for natural language processing, by achieving state-of-the-art results on cross-lingual classification, unsupervised and supervised machine translation [@lample2019crosslingual]. Learning cross-lingual speech representation in pre-training is not only possible, but it also outperforms monolingual models in many experiments. XLSR showed a relative phoneme error rate reduction of 72% compared to the best known results, and it also improved word error rate by 16% On BABEL corpus compared to a comparable system [@conneau2020unsupervised]. This pre-trained XLSR model is finetuned on individual languages which result in a different model for each language. This is particularly useful for languages with low resources as it uses other languages' resources plus the low amount of data from the target language for pre-training, then fine-tune it on the target language.  
+As opposed to pre-training speech models on one language (monolingual pre-training), it is also feasible to make use of data from other languages for performance improvement. This has worked well for natural language processing, by achieving state-of-the-art results on cross-lingual classification, unsupervised and supervised machine translation [@lample2019crosslingual]. Learning cross-lingual speech representation in pre-training is not only possible, but it also outperforms monolingual models in many experiments. XLSR showed a relative phoneme error rate reduction of 72% compared to the best known results, and it also improved word error rate by 16% On BABEL corpus compared to a comparable system [@conneau2020unsupervised]. This pre-trained XLSR model is finetuned on individual languages which results in a different model for each language. This is particularly useful for languages with low resources as it uses other languages' resources plus the low amount of data from the target language for pre-training, then fine-tune it on the target language.  
 
 
 ```{r xlsr, fig.align = 'center',  echo=F, fig.cap='Cross-lingual Speech Representation (XLSR) Approach [36]'}
@@ -537,7 +537,7 @@ Figure \ref{fig:xlsr} shows the approach of XLSR which is similar to that of WAV
 
 ## Connectionist Temporal Classification (CTC)  
 
-CTC is an algorithm used to solve the issue of the mismatch between the actual written sentence and the predicted sentence, it uses the history of the target character without assuming conditional independence between characters. In the bottom of Figure \ref{fig:ctc} we can see how CTC classifies a speech signal, the shaded lines are the output activations, and they correspond to the probability of phonemes matches at particular times. The CTC network predicts only the sequence of phonemes (typically as a series of spikes, separated by ‘blanks’, or null predictions), while the framewise network attempts to align them with the manual segmentation (vertical lines) [@inproceedingsctc].  
+CTC is an algorithm used to solve the issue of the mismatch between the true written sentence and the predicted sentence, it uses the history of the target character without assuming conditional independence between characters. In the bottom of Figure \ref{fig:ctc} we can see how CTC classifies a speech signal, the shaded lines are the output activations, and they correspond to the probability of phonemes matches at particular times. The CTC network predicts only the sequence of phonemes (typically as a series of spikes, separated by ‘blanks’, or null predictions), while the framewise network attempts to align them with the manual segmentation (vertical lines) [@inproceedingsctc].  
 
 
 ```{r ctc, fig.align = 'center',  echo=F, fig.cap='Connectionist Temporal Classification (CTC)'}
@@ -557,7 +557,7 @@ For a given input sequence $X = [x_1, ..., x_T]$ and a corresponding output sequ
 \begin{align}
 Y^* = \underset{Y}{\operatorname{argmax}} P(Y|X)
 \end{align}
-CTC assigns probabilities for each $Y$ given an $X$ according to the alignments between inputs and outputs. Since alignment between input and output is not required by CTC, this makes it suitable for speech input which can have stretches or silence that do not correspond to output. CTC introduces a blank token $\epsilon$ to the set of allowed output, this $\epsilon$ is a placeholder and removed from the output. Figure \ref{fig:epsilon} shows how $\epsilon$ is introduced in the word hello, where repeating characters are merged first, then any $\epsilon$ is removed and the remaining characters are the output. In figure \ref{fig:prob} it can be seen that for an input of audio signal, the input could be fed into RNN or a CNN where the network gives $p_t(a|X)$ a distribution over the outputs {h, e, l, o, $\epsilon$} for each input step, the probability of different sequences is then calculated [@ctc]. The alignment of the most likely output can be calculated by getting the highest prabable alignment as follows:  
+CTC assigns probabilities for each $Y$ given an $X$ according to the alignments between inputs and outputs. Since alignment between input and output is not required by CTC, this makes it suitable for speech input which can have stretches or silence that do not correspond to output. CTC introduces a blank token $\epsilon$ to the set of allowed output, this $\epsilon$ is a placeholder and removed from the output. Figure \ref{fig:epsilon} shows how $\epsilon$ is introduced in the word hello, where repeating characters are merged first, then any $\epsilon$ is removed and the remaining characters are the output. In figure \ref{fig:prob} it can be seen that for an input of audio signal, the input could be fed into RNN or a CNN where the network gives $p_t(a|X)$ a distribution over the outputs {h, e, l, o, $\epsilon$} for each input step, the probability of different sequences is then calculated [@ctc]. The alignment of the most likely output can be calculated by getting the highest probable alignment as follows:  
 
 \begin{align}
 \underset{A}{\operatorname{argmax}} \prod_{t=1}^Tp_t(a_t|X)
@@ -574,13 +574,13 @@ knitr::include_graphics("prob.png")
 
 ## ASR Models Evaluation  
 
-The error rate of the predicted transcript is calculated as a measurement of how accurate an ASR is. The purpose of this process is to compare the performance of different models and techniques, but it can also go as deep as calculating the performance of these models with different hyper parameters settings. When evaluating an ASR we compare the output of the ASR system with the literal transcription of the input audio. The performance of ASRs depends on a number of factors including audio recording condition (e.g. background noise or the recording channel noise), spoken language variability (e.g. spontaneous speech, formal speech, or different accents or dialects), or the speaker variability (e.g. men and women, a speaker in different conditions such as illness, different emotions, and tiredness).  
+The error rate of the predicted transcript is calculated as a measurement of how accurate an ASR is. The purpose of this process is to compare the performance of different models and techniques, but it can also go as deep as calculating the performance of these models with different hyperparameters settings. When evaluating an ASR we compare the output of the ASR system with the literal transcription of the input audio. The performance of ASRs depends on several factors including audio recording condition (e.g. background noise or the recording channel noise), spoken language variability (e.g. spontaneous speech, formal speech, or different accents or dialects), or the speaker variability (e.g. men and women, a speaker in different conditions such as illness, different emotions, and tiredness).  
 
-There are two key areas related to ASR errors, the first one is the reference-recognised alignment which consist of finding the best word alignment between the reference and the automatic transcription and the second one is the evaluation metrics measuring the performance of the ASR systems [@ERRATTAHI201832].  
+There are two key areas related to ASR errors, the first one is the reference-recognised alignment which consists of finding the best word alignment between the reference and the automatic transcription and the second one is the evaluation metrics measuring the performance of the ASR systems [@ERRATTAHI201832].  
 
 ### Reference-Recognised Word Sequences Alignment (RRWSA)  
 
-RRWSA refers to comparing the referenced and recognised words for the purpose of finding three types of errors. First, substitution error: where a word in the reference word sequence is predicted as a different word. Second, Deletion error: where a word could entirely be deleted in the predicted transcript. The third error type is the Insertion error, and in this error a new word appears in the predicted transcript. This word sequence alignment is normally calculated using Viterbi Edit Distance [@682181], in which the weighted error score for the word sequence is minimized. Two distances are calculated (shown in \ref{eq:dist1} and \ref{eq:dist2}), the first distance ($d_\phi^v(x^T,y^V)$) is the most likely transduction between the two strings that is calculated by taking the logarithm of the probability of the most likely edit sequence for the string pair $\langle x^T,y^V\rangle$ and it is calculated recursively [@682181], whereas $d_\phi^s(x^T,y^V)$ is called the stochastic edit distance, and it aggregates all transductions between the two strings by calculating the logarithm of the probability of the string pair $\langle x^T,y^V\rangle$ according to the transducer $\phi$.  
+RRWSA refers to comparing the referenced and recognised words for the purpose of finding three types of errors. First, substitution error: where a word in the reference word sequence is predicted as a different word. Second, Deletion error: where a word could entirely be deleted in the predicted transcript. The third error type is the Insertion error, and in this error, a new word appears in the predicted transcript. This word sequence alignment is normally calculated using Viterbi Edit Distance [@682181], in which the weighted error score for the word sequence is minimized. Two distances are calculated (shown in \ref{eq:dist1} and \ref{eq:dist2}), the first distance ($d_\phi^v(x^T,y^V)$) is the most likely transduction between the two strings that is calculated by taking the logarithm of the probability of the most likely edit sequence for the string pair $\langle x^T,y^V\rangle$ and it is calculated recursively [@682181], whereas $d_\phi^s(x^T,y^V)$ is called the stochastic edit distance, and it aggregates all transductions between the two strings by calculating the logarithm of the probability of the string pair $\langle x^T,y^V\rangle$ according to the transducer $\phi$.  
 
 
 \begin{align}
@@ -613,17 +613,17 @@ where *S* is the total number of words that were substituted, in the predicted t
 
 # Data  
 
-The training data for the Language Model (LM) is limited, and many require Natural Language Processing (NLP) tools such as morph analyzer, diacritizer and text normalizers to be developed [@Abdou_Moussa_2018]. The data in this thesis is downloaded from Mozilla Common Voice Corpus (6.1), the size of the dataset is 2 GB with 49 validated hours by the community (the community validates by either matching the voice with the written text or speaking the text itself), 77 hours in total, 672 number of voices, and mp3 audio format.  
+The training data for the Language Model (LM) is limited, and many require Natural Language Processing (NLP) tools such as morph analyzer, diacritizer, and text normalizers to be developed [@Abdou_Moussa_2018]. The data in this thesis is downloaded from Mozilla Common Voice Corpus (6.1), the size of the dataset is 2 GB with 49 validated hours by the community (the community validates by either matching the voice with the written text or speaking the text itself), 77 hours in total, 672 number of voices, and mp3 audio format.  
 
 ## How Mozilla Common Voice Community validates  
 
-Mozilla depends on contributors who record their voice clips by reading a piece of text and record their voice, this voice is then queued for validation. The clip is valid if another user listens to it and mark it as valid, however, to have the clip in Common Voice dataset, it must be validated by at least two users. If a clip gets a negative vote, it will be returned to the queue, and if it gets another negative vote, then it will be moved to the clip graveyard where all invalid clips exist. [@Mozilla]  
+Mozilla depends on contributors who record their voice clips by reading a piece of text and record their voice, this voice is then queued for validation. The clip is valid if another user listens to it and marks it as valid, however, to have the clip in Common Voice dataset, it must be validated by at least two users. If a clip gets a negative vote, it will be returned to the queue, and if it gets another negative vote, then it will be moved to the clip graveyard where all invalid clips exist. [@Mozilla]  
 
 ## Data Preprocessing   
 
 ### Preprocessing Audio Files  
 
-Since the dataset was initially mp3 audio files, all the files were converted to wav files, the framework takes the following conditions into consideration:  
+Since the dataset was initially mp3 audio files, all the files were converted to wav files, the framework considers the following conditions:    
 
 * The sample rate is to be changed to 16000
 * The Pulse-code modulation (PMC) is to also be changed to 16 bit
@@ -635,9 +635,9 @@ Since the dataset was initially mp3 audio files, all the files were converted to
 The framework requires the transcript to be in the following format:  
 
 1. One sample per line  
-   * Arabic language is written from right to left (rtl language), hence, the sentences were reversed to meet the criteria for the transcript file.
+   * The Arabic language is written from right to left (rtl language), hence, the sentences were reversed to meet the criteria for the transcript file.
 2. Upper case
-   * Arabic language does not have upper and lower case as English, therefore, this condition is ignored.
+   * The Arabic language does not have upper and lower case as English, therefore, this condition is ignored.
 3. All numbers should be transformed into verbal form.
    * All numbers found in the dataset were transformed to verbal form.
 4. All special characters (eg. punctuation) should be removed. The final text should contain words only.
@@ -645,14 +645,15 @@ The framework requires the transcript to be in the following format:
 5. Words in a sentence must be separated by whitespace character  
    * All words in sentences were separated by whitespaces.  
    
-### Diacretics
-Diacritical marks play a crucial role in meeting the criteria of usability of typographic text, such as: homogeneity, clarity and legibility [@hssini2011design]. Diacritics are placed above, below, or through a letter and they can change the semantic of a word completely, see Figure \ref{fig:diacritics}.  
+### Diacretics  
+
+Diacritical marks play a crucial role in meeting the criteria of usability of typographic text, such as homogeneity, clarity, and legibility [@hssini2011design]. Diacritics are placed above, below, or through a letter, and they can change the semantic of a word completely, see Figure \ref{fig:diacritics}.  
 
 ```{r diacritics, fig.align = 'center', echo=F, fig.cap="Diacritical marks in Arabic (https://blogs.transparent.com/arabic/basic-arabic-diacritical-marks/)"}
 knitr::include_graphics("diacritics.png")
 ```
 
-All diacritics were removed from the sentences as they posed a problem when training the model with them, the model read diacritics as individual letters which effected the accuracy since it was required to remove all punctuation marks from the sentences because the model learns the meaning from the context and does not depend on individual words.  
+All diacritics were removed from the sentences as they posed a problem when training the model with them, the model read diacritics as individual letters which affected the accuracy since it was required to remove all punctuation marks from the sentences because the model learns the meaning from the context and does not depend on individual words.  
 
 
 \newpage  
@@ -664,7 +665,7 @@ Self-supervised learning is used in this research with its two phases of pre-tra
 
 ## Data Preparation  
 
-The wrapper used for model training was used for English language, and it requires the transcript file to include the path to the wav files and the transcript corresponding to the was file in one line. Since English is a left-to-right (ltr) language and Arabic is a right-to-left (rtl) language, the Arabic sentences are reversed to fit in the wrapper requirements. Figure \ref{fig:english} illustrates the representation of English in the English transcript file, whereas Figure \ref{fig:arabic} demonstrates the reversed Arabic sentence in the Arabic transcript file.  
+The wrapper used for model training was used for the English language, and it requires the transcript file to include the path to the wav files and the transcript corresponding to the was file in one line. Since English is a left-to-right (ltr) language and Arabic is a right-to-left (rtl) language, the Arabic sentences are reversed to fit in the wrapper requirements. Figure \ref{fig:english} illustrates the representation of English in the English transcript file, whereas Figure \ref{fig:arabic} demonstrates the reversed Arabic sentence in the Arabic transcript file.  
 
 
 ```{r english, fig.align = 'center', echo=F, fig.cap="a snippet of the English transcript file"}
@@ -684,7 +685,7 @@ During pre-training, representations of speech audio are learnt by solving a con
 \frac{p(\mathrm{z_{i+k}}|\mathrm{z_i}...\mathrm{z_{i-r}})}{p(\mathrm{z_{i+k}})}
 \end{align}
 
-During the pre-training phase, the model predicts future samples from a given signal context, this poses a challenge when modeling the data distribution $p(x)$ due to the difficulty associated with calculating feature sample for high-frequency speech signal. To avoid this problem, raw speech samples $\mathrm{x}$ are encoded into a feature representation $\mathrm{z}$ at a lower temporal frequency, and then equation \ref{eq:1} shows the density modeling ratio.  
+During the pre-training phase, the model predicts future samples from a given signal context, this poses a challenge when modeling the data distribution $p(x)$ due to the difficulty associated with calculating feature samples for high-frequency speech signals. To avoid this problem, raw speech samples $\mathrm{x}$ are encoded into a feature representation $\mathrm{z}$ at a lower temporal frequency, and then equation \ref{eq:1} shows the density modeling ratio.  
 
 
 ## Fine-tuning Phase  
@@ -696,10 +697,10 @@ After the pre-training phase, the model is fine-tuned on the labeled dataset by 
 
 A second methodology is used in this research, where multilingual pre-trained models are explored. The pre-trained model used is XLSR-Wav2Vec2, the successor to wav2vec, this model learns basic speech units used to tackle a self-supervised task for several languages, and is pre-trained and released by Facebook AI Research in September 2020. The pre-trained model is trained the same way *wav2vec2.0* is, but on 53 different languages. This model can benefit from the availability of some languages and use them for less available languages.  XLSR-Wav2Vec2 is fine-tuned using CTC for calculating the loss by summing up all scores of all possible alignments between input and output. 
 
-XLSR-Wav2Vec2 model has many hyperparameters to tune, nonetheless, a small number of these parameters, that we fine-tune during fine-tuning phase, is mentioned here:  
+XLSR-Wav2Vec2 model has many hyperparameters to tune, nonetheless, a small number of these parameters, that we fine-tune during the fine-tuning phase, is mentioned here:  
 
 \noindent 
-**save_steps** is the number of updates steps before two checkpoint saves.  
+**save_steps** is the number of update steps before two checkpoint saves.  
 **eval_steps** is when evaluation is done (and logged) by calculating the WER.  
 **num_train_epochs** is the number of full iteration on our data the neural network is going to perform.  
 **per_device_train_batch_size** is the batch size per GPU core.  
@@ -711,9 +712,9 @@ XLSR-Wav2Vec2 model has many hyperparameters to tune, nonetheless, a small numbe
 
 # Result   
 
-## The result of monolingual model  
+## The result of the monolingual model  
 
-Figure \ref{fig:training_accuracy} and \ref{fig:validation_accuracy}, respectively, show training and validation accuracies (which indicates how accurate the model predicts the true masked vector) during pre-training on training Mozilla Common Voice dataset. As it could be seen from the two charts, the training accuracy never went above 0.624, whereas the validation accuracy remained at 0.578. Around epoch 545 the validation accuracy plummeted when the training accuracy kept increasing. This accuracy refers to how good our contrastive learning is, in other words, how accurate is our prediction of the masked vectors. 
+Figures \ref{fig:training_accuracy} and \ref{fig:validation_accuracy}, respectively, show training and validation accuracies (which indicates how accurate the model predicts the true masked vector) during pre-training on training Mozilla Common Voice dataset. As it could be seen from the two charts, the training accuracy never went above 0.624, whereas the validation accuracy remained at 0.578. Around epoch 545 the validation accuracy plummeted when the training accuracy kept increasing. This accuracy refers to how good our contrastive learning is, in other words, how accurate is our prediction of the masked vectors. 
 
 
 
@@ -724,7 +725,7 @@ knitr::include_graphics("training_accuracy.png")
 knitr::include_graphics("validation_accuracy.png")
 ```
 
-The pre-training phase took more than 21.5 days when it was stopped for the purpose of fine-tuning, there was no early-sopping and the change in validation accuracy was as low as 0.002. Since the pre-training phase on monolingual dataset was computationally expensive and had low accuracy, it was decided to choose a cross-lingual pre-trained model. Therefore, the fine-tuning for this model was also stopped before it was finished.    
+The pre-training phase took more than 21.5 days when it was stopped for the purpose of fine-tuning, there was no early-sopping and the change in validation accuracy was as low as 0.002. Since the pre-training phase on the monolingual dataset was computationally expensive and had low accuracy, it was decided to choose a cross-lingual pre-trained model. Therefore, the fine-tuning for this model was also stopped before it was finished.    
 
 ## The result of the pre-trained XLSR model   
 
@@ -733,7 +734,7 @@ The pre-training phase took more than 21.5 days when it was stopped for the purp
 knitr::include_graphics("training_is_done.png")
 ```
 
-Figure \ref{fig:wer37} illustrates how WER decrease as the number of epochs and steps increase, it also shows how the training and validation losses decrease, as well as the number of steps.  
+Figure \ref{fig:wer37} illustrates how WER decrease as the number of epochs and steps increases, it also shows how the training and validation losses decrease, as well as the number of steps.  
 
 ```{r WER36.53, fig.align = 'center', echo=F, fig.cap="WER Result for Test Dataset"}
 knitr::include_graphics("WER36.53.png")
@@ -746,7 +747,7 @@ Figure \ref{fig:WER36.53} shows the word error rate with 250 warmup steps, *3e-4
 knitr::include_graphics("sample_prediction.png")
 ```
 
-Figure \ref{fig:sample_prediction} shows the predicted sentence for one of the audio files from test dataset. As it can clearly be seen in figure \ref{fig:sample_prediction} the predicted sentence and the source sentence (Reference) are almost the same except for two words. One of the two words is altered by *Insertion* and the second word is changed by both *Deletion* and *Insertion* in terms of WER estimation.  
+Figure \ref{fig:sample_prediction} shows the predicted sentence for one of the audio files from the test dataset. As it can be seen in figure \ref{fig:sample_prediction} the predicted sentence and the source sentence (Reference) are almost the same except for two words. One of the two words is altered by *Insertion* and the second word is changed by both *Deletion* and *Insertion* in terms of WER estimation.  
 
 
 Figure \ref{fig:wer_compared} shows different models with WER that are compared with each other based on WER, as we can see our model placed third with WER of 36.69 % [@paperswithcode]. The first model is derived from the second model by fine-tuning the model hyperparameters.  
@@ -761,17 +762,17 @@ knitr::include_graphics("wer_compared.png")
 
 # Discussion  
 
-Self-supervised learning provides a great way of making use of unlabeled datasets. The data that used for this research is unlabeled data for pre-training phase and labeled data for fine-tuning. SSL had been there, before the introduction of wav2vec framework, to automatically generate supervisory signal from unlabeled data to solve a task (a contrastive one in our research).  But it was not until wav2vec was introduced in September 2019 by Facebook AI Research, that we have seen a significant improvement is SSL application in speech recognition. wav2vec is a CNN that takes raw audio as input and produces general representations that could be used as input to an ASR. It accomplishes that by solving a contrastive task that requires differentiating between true future label from negative ones. As oppose to phoneme classification, the learned representations are applied to improve ASR systems.    
+Self-supervised learning provides a great way of making use of unlabeled datasets. The data that is used for this research is unlabeled data for the pre-training phase and labeled data for fine-tuning. SSL had been there, before the introduction of wav2vec framework, to automatically generate supervisory signals from unlabeled data to solve a task (a contrastive one in our research).  But it was not until wav2vec was introduced in September 2019 by Facebook AI Research, that we have seen a significant improvement in SSL application in speech recognition. wav2vec is a CNN that takes raw audio as input and produces general representations that could be used as input to an ASR. It accomplishes that by solving a contrastive task that requires differentiating between the true future label from negative ones. As oppose to phoneme classification, the learned representations are applied to improve ASR systems.    
 
-Performing a pre-training task on a single language model with single input language is nowhere near as accurate as pre-training ASR models on Cross-lingual language model pre-training. This was proven by Facebook AI Research [@lample2019crosslingual], and was also seen clearly when we pre-trained our model on only Arabic input, which resulted in 58% accuracy during pre-training, and that was a good reason for not fine-tuning the model on labeled data as the contrastive loss is high. This could be attributed to: firstly, the huge amount of training data for cross-lingual model one could acquire as opposed to finding a monolingual model dataset. Secondly, as the humans' sound-generating system is designed in the same way, it does make sense to use other languages, with the target language that we want to fine-tune our model on, to pre-train a model then fine-tune that model on that target language alone.   
+Performing a pre-training task on a single language model with a single input language is nowhere near as accurate as pre-training ASR models on a cross-lingual language model pre-training. This was proven by Facebook AI Research [@lample2019crosslingual], and was also seen clearly when we pre-trained our model on only Arabic input, which resulted in 58% accuracy during pre-training, and that was a good reason for not fine-tuning the model on labeled data as the contrastive loss is high. This could be attributed to: firstly, the huge amount of training data for cross-lingual model one could acquire as opposed to finding a monolingual model dataset. Secondly, as the humans' sound-generating system is designed in the same way, it does make sense to use other languages, with the target language that we want to fine-tune our model on, to pre-train a model then fine-tune that model on that target language alone.   
 
-Moreover, the process of having pre-trained models for each language for the purpose of fine-tuning these models on languages they were pre-trained on is time-consuming and resource intensive. It could be seen from our pre-training phase that more than 21 days were taken to pre-train our model (21.5 days) without convergence. Despite the Nvidia Tesla G80 GPU that was used for pre-training.   
+Moreover, the process of having pre-trained models for each language for the purpose of fine-tuning these models on languages they were pre-trained on is time-consuming and resource-intensive. It could be seen from our pre-training phase that more than 21 days were taken to pre-train our model (21.5 days) without convergence. Despite the Nvidia Tesla G80 GPU that was used for pre-training.   
 
-Fine-tuning our model on the same dataset (Mozilla Common Voice) with different diacritics removal techniques and model parameters, has resulted in a different dictionary and a higher accuracy compared to other models fine-tuned on the same datasets, but with different diacritics removal techniques. There are many diacritics in Arabic language that need to be removed before in the preprocessing step before doing any model training, these diacritics could be difficult to number, and that is the reason we saw different models scoring low WER despite them having excellent hyperparameter tuning. For instance, one of the models uploaded on huggingface.co is reported to have had WER of 46.77 % [@Huggingface_othrif], however, when checked with our diacritics removal script, the model's accuracy increased, with a WER of 45.5.  
+Fine-tuning our model on the same dataset (Mozilla Common Voice) with different diacritics removal techniques and model parameters has resulted in a different dictionary and a higher accuracy compared to other models fine-tuned on the same datasets, but with different diacritics removal techniques. There are many diacritics in the Arabic language that need to be removed before in the preprocessing step before doing any model training, these diacritics could be difficult to number, and that is the reason we saw different models scoring low WER despite them having excellent hyperparameter tuning. For instance, one of the models uploaded on huggingface.co is reported to have had WER of 46.77 % [@Huggingface_othrif], however, when checked with our diacritics removal script on the dataset the model was tested on, the model's accuracy increased, with a WER of 45.5.  
 
-Diacritcs can be confusing and using them might lead to low accuracy during model fine-tuning because they are neither letters nor spaces, when they were included in the fine-tuning phase they were considered by the model as language letters in the language dictionary. This dictionary is stored by the framework for comparing the correct characters and assigning codes to them. Therefore, the removal of all diacritics from the transcript files resulted in higher accuracy and low WER.  
+Diacritics can be confusing and using them might lead to low accuracy during model fine-tuning because they are neither letters nor spaces, when they were included in the fine-tuning phase they were considered by the model as language letters in the language dictionary. This dictionary is stored by the framework for comparing the correct characters and assigning codes to them. Therefore, the removal of all diacritics from the transcript files resulted in higher accuracy and low WER.  
 
-The model initially scored 56.22 % WER (Figure \ref{fig:WER_after_800}) before hyperparameters tuning. After removing all diacritics and tuning hyperparameters, our model achieved a WER of 36.69 %. It was then reported to be compared with other models [@themodel]. This accuracy placed our model third on huggingface fine-tuning competition [@paperswithcode], after a model that scored 26.55 for WER, and another model that was tuned with different hyper-parameters, thus, decreased the WER to 23.8 %.  
+The model initially scored 56.22 % WER (Figure \ref{fig:WER_after_800}) before hyperparameters tuning. After removing all diacritics and tuning hyperparameters, our model achieved a WER of 36.69 %. It was then reported to be compared with other models [@themodel]. This accuracy placed our model on the top three Arabic language models used in huggingface speech recognition [@paperswithcode], after a model that scored 26.55 for WER, and another model that was tuned with different hyper-parameters, thus, decreased the WER to 23.8 %.  
 
 ```{r WER_after_800, fig.align = 'center', echo=F, fig.cap="Initial WER before hyperparameters fine-tuning"}
 knitr::include_graphics("WER_after_800.png")
@@ -780,17 +781,17 @@ knitr::include_graphics("WER_after_800.png")
 
 The model that scored the best accuracy used *transliteration*, which is the process of changing a word from the alphabet of its original language (source language) to another language (target language). By performing transliteration on Arabic (changing all its letters to their corresponding English letters), avoidance of diacritics problem is for certain as we no longer have diacritics. However, having manually removed diacritics from Arabic has also resulted in high accuracy compared to other models.  
 
-This model could have been improved and other models could have been developed with different number of network layers, different vector quantization techniques, or different language models. But due to the limited time allocated for this thesis it was not possible to use other models.  
+This model could have been improved and other models could have been developed with a different number of network layers, different vector quantization techniques, or different language models. But due to the limited time allocated for this thesis, it was not possible to use other models.  
 
 \newpage  
 
 # Conclusion  
 
-In this project, an Automatic Speech Recognition (ASR) system was implemented based on a small amount of data for Arabic language. Self-supervised learning (SSL) was the main means used for conducting this research. A pre-training phase was, first, carried out on 42 hours of unlabeled Arabic language dataset from *Mozilla Common Voice* for the purpose of fine-tuning this pre-trained model on labeled Arabic data, the pre-training took more than 21 days without finishing. Due to this, attention was instead directed on using a pre-trained model available online. This study, secondly, took advantage of an unsupervised cross-lingual speech representation (XLSR) that had been pre-trained on multiple languages, including Arabic, and then this pre-trained model was fine-tuned on Arabic language. The unsupervised XLSR was pre-trained on 53 different languages and built on *wav2vec 2.0* which solves a contrastive task for masked latent speech representations. This model was proven to be significantly more efficient than the monolingual pre-training.  
+In this project, an Automatic Speech Recognition (ASR) system was implemented based on a small amount of data for Arabic language. Self-supervised learning (SSL) was the main means used for conducting this research. A pre-training phase was, first, carried out on 42 hours of unlabeled Arabic language dataset from *Mozilla Common Voice* for the purpose of fine-tuning this pre-trained model on labeled Arabic data, the pre-training took more than 21 days without finishing. Due to this, attention was instead directed to using a pre-trained model available online. This study, secondly, took advantage of an unsupervised cross-lingual speech representation (XLSR) that had been pre-trained on multiple languages, including Arabic, and then this pre-trained model was fine-tuned on Arabic language. The unsupervised XLSR was pre-trained on 53 different languages and built on *wav2vec 2.0* which solves a contrastive task for masked latent speech representations. This model was proven to be significantly more efficient than the monolingual pre-training.  
 
 The Word Error Rate (WER) of the fine-tuned *XLSR* with *wav2vec 2.0* on Arabic language was initially 54.00 %. After fine-tuning the model parameters, we obtained a WER of 36.69 % which placed this model third in *huggingface* company's Arabic language models. It is now being used and has been downloaded 32 times from the official website of *huggingface* (https://huggingface.co/mohammed/ar).  
 
-The first research question is about the scarcity of transcribed data, which is addressed by open-source project such as *Mozilla Common Voice* that enables communities to participate in creating speech corpus for different languages. The speech data used in this study was obtained from *Mozilla Common Voice*. Additionally, finding a huge amount of labeled data has become no longer a concern given *self-supervised learning* (SSL). SSL, which is our second question of this research, has proven successful when dealing with unlabeled Arabic speech data. Cross-lingual speech representation (XLSR) was used in this research to utilize unlabeled data from multiple languages in the pre-training phase and then fine-tune our model on labeled Arabic language data. Using pre-trained models for Automatic Speech Recognition, and fine-tuning them on labeled Arabic speech data, was more efficient and timesaving than pre-training a monolingual model. The third question takes the model accuracy given the amount of labeled data used, and we proved
+The first research question is about the scarcity of transcribed data, which is addressed by open-source projects such as *Mozilla Common Voice* that enables communities to participate in creating speech corpus for different languages. The speech data used in this study was obtained from *Mozilla Common Voice*. Additionally, finding a huge amount of labeled data has become no longer a concern given *self-supervised learning* (SSL). SSL, which is our second question of this research, has proven successful when dealing with unlabeled Arabic speech data. Cross-lingual speech representation (XLSR) was used in this research to utilize unlabeled data from multiple languages in the pre-training phase and then fine-tune our model on labeled Arabic language data. Using pre-trained models for Automatic Speech Recognition, and fine-tuning them on labeled Arabic speech data, was more efficient and time-saving than pre-training a monolingual model. The third question takes the model accuracy given the amount of labeled data used, and we proved
 that by using as few as 42 hours of labeled data we could achieve a WER of 36.69 %.  
 
 
