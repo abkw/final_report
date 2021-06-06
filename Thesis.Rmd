@@ -714,16 +714,14 @@ XLSR-Wav2Vec2 model has many hyperparameters to tune, nonetheless, a small numbe
 
 ## The result of the monolingual model  
 
-Figures \ref{fig:training_accuracy} and \ref{fig:validation_accuracy}, respectively, show training and validation accuracies (which indicates how accurate the model predicts the true masked vector) during pre-training on training Mozilla Common Voice dataset. As it could be seen from the two charts, the training accuracy never went above 0.624, whereas the validation accuracy remained at 0.578. Around epoch 545 the validation accuracy plummeted when the training accuracy kept increasing. This accuracy refers to how good our contrastive learning is, in other words, how accurate is our prediction of the masked vectors. 
+Figure \ref{fig:training_accuracy} shows training and validation accuracies (which indicates how accurate the model predicts the true masked vector) during pre-training on Mozilla Common Voice training dataset. As it can be seen in the chart, the training accuracy was in a very slow increase trend, whereas the validation accuracy never went above 0.601 except for the first 50 warmup epochs. The validation accuracy started to slightly decrease after around 450 epochs (in the fifteenth day of pre-training). This accuracy refers to how good our contrastive learning is, in other words, how accurate is our prediction of the true masked vectors. 
 
 
 
 ```{r training_accuracy, fig.align = 'center', echo=F, fig.cap="Training Accuracy During Pre-training"}
-knitr::include_graphics("training_accuracy.png")
+knitr::include_graphics("train_valid_accuracy.png")
 ```
-```{r validation_accuracy, fig.align = 'center', echo=F, fig.cap="Validation Accuracy During Pre-training"}
-knitr::include_graphics("validation_accuracy.png")
-```
+
 
 The pre-training phase took more than 21.5 days when it was stopped for the purpose of fine-tuning, there was no early-sopping and the change in validation accuracy was as low as 0.002. Since the pre-training phase on the monolingual dataset was computationally expensive and had low accuracy, it was decided to choose a cross-lingual pre-trained model. Therefore, the fine-tuning for this model was also stopped before it was finished.    
 
