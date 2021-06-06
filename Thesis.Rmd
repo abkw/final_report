@@ -118,7 +118,7 @@ The importance of Automatic Speech Recognition (ASR) Systems, whose job is to ge
 
 Arabic language is one of the languages that do not have an abundance of labeled data, which makes its ASR system's accuracy very low compared to other resource-rich languages such as English, French, or Spanish. In this research, we take advantage of unlabeled voice data by learning general data representations from unlabeled training data (only audio files) in a self-supervised task or pre-training phase. This phase is done by using wav2vec 2.0 framework which masks out input in the latent space and solves a contrastive task. The model is then fine-tuned on a few amounts of labeled data. We also exploit models that have been pre-trained on different languages, by using wav2vec 2.0, for the purpose of fine-tuning them on Arabic language by using annotated Arabic data.  
 
-We show that using wav2vec 2.0 framework for pre-training on Arabic is considerably time and resource-consuming. It took the model 21.5 days 21.5 days (about 3 weeks) to complete 662 epochs and get a validation accuracy of 58%.  Arabic is a right-to-left (rtl) language with many diacritics that indicate how letters should be pronounced, these two features make it difficult for Arabic to fit into these models, as it requires heavy pre-processing for the transcript files. We demonstrate that, we can fine-tune a cross-lingual model, that is trained on raw waveform of speech in multiple languages, on Arabic data and get low word error rate 36.53%. We also prove that by fine-tuning the model parameters we can increase the accuracy, thus, decrease the word error rate from 54.00% 36.69 %.   
+We show that using wav2vec 2.0 framework for pre-training on Arabic is considerably time and resource-consuming. It took the model 21.5 days 21.5 days (about 3 weeks) to complete 662 epochs and get a validation accuracy of 58%.  Arabic is a right-to-left (rtl) language with many diacritics that indicate how letters should be pronounced, these two features make it difficult for Arabic to fit into these models, as it requires heavy pre-processing for the transcript files. We demonstrate that, we can fine-tune a cross-lingual model, that is trained on raw waveform of speech in multiple languages, on Arabic data and get low word error rate 36.53%. We also prove that by fine-tuning the model parameters we can increase the accuracy, thus, decrease the word error rate from 54.00% to 36.69%.   
 
 
 \newpage 
@@ -173,7 +173,7 @@ DigitalTolk provides more than 200 languages and dialects support, it has transl
 
 Even though, the current solution might be efficient for many scenarios, a faster and more efficient and effective way would be to build an Automatic Speech Recognition (ASR) systems by using the state-of-the-art speech recognition technologies. This new ASR system interprets from Swedish to Arabic and from Arabic to Swedish in real time, it allows non-Arabic-speaking healthcare workers to communicate with patients who are unable to speak Swedish. The ASR does the interpretation through a device that listens to a sentence in a language and then speaks that sentence in another language.  
 
-To build an ASR system, a huge amount of training and validation data is needed for the model to achieve high accuracy, and this poses a challenge for building this system as the problem of data annotation (labeled datasets) has been a major issue for ASR systems, and that could be attributed to the fact that individuals generally do not write as much as they speak, and the spoken language tends to be different than the written form of that language (different dialects). Because of this, a system can be developed with a few amounts of labeled (annotated) data. Building an ASR with low amounts of annotated Arabic training data will subsequently lay the foundation for building other ASRs for different Arabic dialects or even other languages.   
+To build an ASR system, a huge amount of training and validation data is needed for the model to achieve high accuracy, and this poses a challenge for building this system as the problem of data annotation (labeled datasets) has been a major issue for ASR systems, and that could be attributed to the fact that individuals generally do not write as much as they speak, and the spoken language tends to be different than the written form of that language (different dialects). Because of this, a model that utilizes a few amounts of labeled (annotated) data, yet achieves high prediction accuracy is needed. Building an ASR with low amounts of annotated Arabic training data will subsequently lay the foundation for building other ASRs for different Arabic dialects or even other languages.   
 
 ## Research Questions:   
 
@@ -183,7 +183,7 @@ This research answers the following questions:
 
 * Can self-supervised learning be used to utilize unlabeled speech data for training an Arabic ASR system? If not, what other techniques could be used?  
 
-* Is it possible to achieve high accuracy using a small amount of labeled data when using multilingual pre-trained models as opposed to monolingual models?    
+* Is it possible to achieve high accuracy using a few amount of labeled data?     
 
 
 \newpage  
@@ -200,7 +200,7 @@ If audio is to be transcribed, going straight to characters is not feasible as c
 
 Once phoneme representation is acquired, it adds even more complexity to the ASR system, because now the ASR system does not associate audio features with words, it associates them with another kind of transcription. This brings us to the introduction of another component into the pipeline that tries to understand how to convert the transcriptions in phonemes into actual spelling, and this is done by using a phonemes dictionary that contains a mapping of each word and its respective phonemes representation.   
 
-To transform an acoustic signal to words, it is desired to first explore the elements of speech that are: **Segments** that are discrete units that can be identified, either physically or auditorily, in the stream of speech, **Words**, **Syllables** which is a segment of a speech that consists of a vowel, and **Phonemes** ahta are a unique concept in phonetic to recognize words and phones. The figure below transcripts the sentence "she just had a baby" with phonemes. A segment is, on the other hand, a one or multiple phonemes.   
+To transform an acoustic signal to words, it is desired to first explore the elements of speech that are: **Segments** that are discrete units that can be identified, either physically or auditorily, in the stream of speech, **Words**, **Syllables** which are segments of a speech that consist of a vowel, and **Phonemes** that are unique concepts in phonetic to recognize words and phones. The figure below transcripts the sentence "she just had a baby" with phonemes. A segment is, on the other hand, a one or multiple phonemes.   
 
 
 ```{r phonemes, fig.align = 'center', echo=F, fig.cap="Waveform of someone saying: \'she just had a baby \'"}
@@ -258,7 +258,7 @@ In ASR systems (illusterated in figure \ref{fig:classicway}), structured sequenc
 
 The model is to model the distribution of words in the word space. ASR systems infers the sentences acoustic waveforms. Speech signals are sequential in nature, and that is where generative models come into view by using Bayes' rule to combine Hidden Markov Model (HMM) acoustic models and N-gram language models. On the contrary, the machine learning and natural language processing (NLP) research areas are increasingly dominated by discriminative approaches, where the class posteriors are directly modeled [@6296527]. For instance, when a child is told to "bring that cup", the child does not actually know unless one points to the cup, discriminative models would tell the child the difference between the cup and the other objects that might exist.  
 
-Generative model classification use Bayes' rule e.g., for HMMs, and it can be split into a language model, the prior, $P(w)$ that yields a probability of any sentence, and an acoustic model $p(O_{1:T}, \lambda^{(w)})$ which is the likelihood that a sentence $w$ generated the observations $O_{1:T}$ with model parameters $\lambda^{(w)}$. We can, as a result obtain the posterior by applying Bayes' rule:  
+Generative model classification use Bayes' rule e.g., for HMMs, and it can be split into a language model, the prior, $P(w)$ that yields a probability of any sentence, and an acoustic model $p(O_{1:T}| \lambda^{(w)})$ which is the likelihood that a sentence $w$ generated the observations $O_{1:T}$ with model parameters $\lambda^{(w)}$. We can, as a result obtain the posterior by applying Bayes' rule:  
 
 \begin{align}
 P(w|O_{1:T}, \lambda) = \frac{p(O_{1:T}|w, \lambda^{(w)}) P(w)}{\sum_{w}p(O_{1:T}|w, \lambda^{(w)})P(w)}
@@ -434,7 +434,8 @@ knitr::include_graphics("rnn.png")
 ```
 
 
-### Transformers in Speech Recognition  
+\subsubsection{Transformers in Speech Recognition}  
+\label{section:transformers}
 
 The concept of transformers was proposed in 2017 for Natural Language Processing (NLP) [@vaswani2017attention]. It has, since then, been heavily used to solve different NLP tasks such as text classification and text analysis. Transformers achieved 28.4 Bilingual Evaluation Understudy (BLEU) on the Workshop on Statistical Machine Translation (WMT) dataset 2014, English-to-German translation task, improving over the existing best results, including ensembles, by over 2 BLEU [@vaswani2017attention]. In machine translation systems, BLUE is a performance evaluation technique that compares the candidate translation, which is done by the machine, and the reference translation or the human-generated translation. For speech recognition, Transformers have achieved competitive recognition accuracy compared to RNN-based counterparts within both end-to-end and hybrid frameworks [@lu2020exploring]. Transformers are similar to RNNs in that they handle sequential input data, but they, yet differ from RNNs in that they do not require sequential data to be processed in order. They introduced an attention mechanism that learns contextual relations between words (or sub-words) in a text. The Transformer, in its most basic form, consists of an encoder and a decoder, the encoder reads the text input by mapping an input sequence of symbol representation $(x_1,...,x_n)$ to a sequence of continuous representation $z = (z_1,...,z_n)$ whereas, the decoder produces a prediction for the task by generating an output sequence $(y_1, ...,y_m)$ from the input $z$ it receives from the encoder. As opposed to directional models, which read the text input sequentially (left-to-right or right-to-left), the Transformer encoder reads the entire sequence of words at once. This bidirectional characteristic allows the model to learn the context of a word based on all of its surroundings (left and right of the word) [@towardsdatasience].
 
@@ -479,7 +480,7 @@ $sim(c_t, q_t)$ and $sim(c_t, \tilde{q_t})$ are the cosine similarity between co
 
 ### SSL in Speech Recognition  
 
-A speech file consists of raw audio that could be represented as an audio wave. In the framework used in this research (*wav2vec 2.0*) [@2020arXiv200611477B], a multi-layer Convolutional feature encoder $f: \mathcal{X}\to\mathcal{Z}$ is used to encode raw speech audio $\mathcal{X}$ and output latent speech representations $z_1,...,z_T$ for *T* time-steps [@jiang2019improving]. The output of the feature encoder is discretized to $\mathrm{q}_t$ and, thereafter, fed to a Transformer network, (discussed in [Transformers][Transformers in Speech Recognition] section) $g: \mathcal{Z}\to\mathcal{C}$ to build representations $c_1,...,c_T$ by reading the entire sequence of words at once (bidirectionally) [@devlin2019bert]. The model is trained via a contrastive task discussed in section \ref{section:cl}, defined over a quantization of the latent representation, where the true latent is to be distinguished from distractors [@2020arXiv200611477B].  
+A speech file consists of raw audio that could be represented as an audio wave. In the framework used in this research (*wav2vec 2.0*) [@2020arXiv200611477B], a multi-layer Convolutional feature encoder $f: \mathcal{X}\to\mathcal{Z}$ is used to encode raw speech audio $\mathcal{X}$ and output latent speech representations $z_1,...,z_T$ for *T* time-steps [@jiang2019improving]. The output of the feature encoder is discretized to $\mathrm{q}_t$ and, thereafter, fed to a Transformer network (discussed in section \ref{section:transformers}) $g: \mathcal{Z}\to\mathcal{C}$ to build representations $c_1,...,c_T$ by reading the entire sequence of words at once (bidirectionally) [@devlin2019bert]. The model is trained via a contrastive task discussed in section \ref{section:cl}, defined over a quantization of the latent representation, where the true latent is to be distinguished from distractors [@2020arXiv200611477B].  
 
 ```{r framework, fig.align = 'center',  echo=F, fig.cap='The framework which jointly learns contextualized speech representations and an inventory of discretized speech units. [1]'}
 knitr::include_graphics("framework2.png")
@@ -508,9 +509,10 @@ Transfer learning is to use a model, that was used for a specific task, for a ne
 
 ### Pre-trained Models  
 
-#### WAV2VEC Pre-training  
 
-WAV2VEC is a model for unsupervised pre-training tasks in speech recognition developed by Facebook AI. It is a multi-layer convolutional neural network (CNN) that receives raw audio as input and outputs general representations for the raw audio, which can subsequently be used as input to ASR systems. WAV2VEC reduces WER of a strong character-based log-mel filterbank baseline [@m2014choice] by up to 36 % when only a few hours of transcribed data is available [@schneider2019wav2vec]. Figure \ref{fig:wav2vec} shows the architecture of WAV2Vec that takes the raw audio as input to a fully connected CNN to solve next time prediction task.  
+#### WAV2VEC Pre-training   \newline \newline
+
+*wav2vec* is a model for unsupervised pre-training tasks in speech recognition developed by Facebook AI. It is a multi-layer convolutional neural network (CNN) that receives raw audio as input and outputs general representations for the raw audio, which can subsequently be used as input to ASR systems. WAV2VEC reduces WER of a strong character-based log-mel filterbank baseline [@m2014choice] by up to 36 % when only a few hours of transcribed data is available [@schneider2019wav2vec]. Figure \ref{fig:wav2vec} shows the architecture of WAV2Vec that takes the raw audio as input to a fully connected CNN to solve next time prediction task.  
 
 
 ```{r wav2vec, fig.align = 'center',  echo=F, fig.cap='WAV2VEC Fully Convolutional Architecture [35]'}
@@ -522,8 +524,7 @@ The parameterized encoder network $f : \mathcal{X} \mapsto \mathcal{Z}$ is appli
 The output of the encoder network is then fed into a context network $g : \mathcal{Z} \mapsto \mathcal{C}$ which can be seen in figure \ref{fig:framework}, and that has nine layers with kernel size three, stride one, and 210 ms receptive field. The context network outputs a single contextualized tensor $c_i = g(\mathrm{z_i}... \mathrm{z_{i-v}})$ from the multiple latent representations $\mathrm{z_i}... \mathrm{z_{i-v}}$ obtained from the encoder network. This context network follows the Transformer architecture [@2020arXiv200611477B]. An output layer is added on top of the transformer network for the purpose of fine-tuning the model on labeled data and making predictions.     
 
 
-#### Cross-lingual Speech Representation (XLSR)  
-
+#### Cross-lingual Speech Representation (XLSR)   \newline \newline
 As opposed to pre-training speech models on one language (monolingual pre-training), it is also feasible to make use of data from other languages for performance improvement. This has worked well for natural language processing, by achieving state-of-the-art results on cross-lingual classification, unsupervised and supervised machine translation [@lample2019crosslingual]. Learning cross-lingual speech representation in pre-training is not only possible, but it also outperforms monolingual models in many experiments. XLSR showed a relative phoneme error rate reduction of 72% compared to the best known results, and it also improved word error rate by 16% On BABEL corpus compared to a comparable system [@conneau2020unsupervised]. This pre-trained XLSR model is finetuned on individual languages which result in a different model for each language. This is particularly useful for languages with low resources as it uses other languages' resources plus the low amount of data from the target language for pre-training, then fine-tune it on the target language.  
 
 
@@ -612,7 +613,7 @@ where *S* is the total number of words that were substituted, in the predicted t
 
 # Data  
 
-The training data for the Language Model (LM) is limited, and many required Natural Language Processing (NLP) tools such as morph analyzer, diacritizer and text normalizers need to be developed [@Abdou_Moussa_2018]. The data in this thesis is downloaded from Mozilla Common Voice Corpus (6.1), the size of the dataset is 2 GB with 49 validated hours by the community (the community validates by either matching the voice with the written text or speaking the text itself), 77 hours in total, 672 number of voices, and mp3 audio format.  
+The training data for the Language Model (LM) is limited, and many require Natural Language Processing (NLP) tools such as morph analyzer, diacritizer and text normalizers to be developed [@Abdou_Moussa_2018]. The data in this thesis is downloaded from Mozilla Common Voice Corpus (6.1), the size of the dataset is 2 GB with 49 validated hours by the community (the community validates by either matching the voice with the written text or speaking the text itself), 77 hours in total, 672 number of voices, and mp3 audio format.  
 
 ## How Mozilla Common Voice Community validates  
 
@@ -659,7 +660,7 @@ All diacritics were removed from the sentences as they posed a problem when trai
 
 # Methodology  
 
-Self-supervised learning is used in this research with its two phases of pre-training and fine-tuning, where transfer learning is the main technique. The implementation is done on a cloud-hosted CPU with Tesla K80 Nvidia GPU, using a wrapper version of wav2vec 2.0 framework [@2020arXiv200611477B] that is used for the purpose of training and testing the model. After the [data preprocessing phase][Data Preprocessing] of Mozilla Common Voice Arabic dataset (6.1), the training and validation datasets are fed to the model for the purpose of fine-tuning, the model is, then, evaluated on the test dataset.   
+Self-supervised learning is used in this research with its two phases of pre-training and fine-tuning, where transfer learning is the main technique. The implementation is done on a cloud-hosted server with Tesla K80 Nvidia GPU, using a wrapper version of wav2vec 2.0 framework [@2020arXiv200611477B] that is used for the purpose of training and testing the model. After the [data preprocessing phase][Data Preprocessing] of Mozilla Common Voice Arabic dataset (6.1), two approaches were carried out. The first one was to pre-train a monolingual model on the training dataset and fine-tune it on the validation dataset, this model is then tested on the test dataset. The second approach was to use a pre-trained XLSR model and fine-tune it on training and validation datasets, then the fine-tuned model is evaluated on the test dataset. The first approach was inefficient because of the time and resources it took for completing the pre-training phase, the model used in this approach had a long pre-training time, it continued for more than 21 days and the pre-training was ongoing until it was stopped with 58% accuracy. It was then decided to choose a pre-trained model that could be fine-tuned on Arabic language (the second approach), the chosen model for this purpose is a pre-trained Wav2Vec2-XLSR-53 that is pre-trained on 53 languages including Arabic.  
 
 ## Data Preparation  
 
@@ -678,7 +679,10 @@ knitr::include_graphics("arabic.png")
 
 During pre-training, representations of speech audio are learnt by solving a contrastive task (see section \ref{section:cl}). The pre-training phase requires having a set of distractors from which to identify the correct quantized latent audio representation. This phase took more than 21 days (504 hours), it was then stopped, after 662 epochs for the purpose of fine-tuning.  
 
-
+\begin{align}
+\label{eq:1}
+\frac{p(\mathrm{z_{i+k}}|\mathrm{z_i}...\mathrm{z_{i-r}})}{p(\mathrm{z_{i+k}})}
+\end{align}
 
 During the pre-training phase, the model predicts future samples from a given signal context, this poses a challenge when modeling the data distribution $p(x)$ due to the difficulty associated with calculating feature sample for high-frequency speech signal. To avoid this problem, raw speech samples $\mathrm{x}$ are encoded into a feature representation $\mathrm{z}$ at a lower temporal frequency, and then equation \ref{eq:1} shows the density modeling ratio.  
 
@@ -723,9 +727,9 @@ knitr::include_graphics("training_accuracy.png")
 knitr::include_graphics("validation_accuracy.png")
 ```
 
-The pre-training phase took more than 21.5 days when it was stopped for the purpose of fine-tuning, there was no early-sopping and the change in validation accuracy was as low as 0.002. Since the pre-training phase on monolingual dataset was computationally expensive and had low accuracy, it was decided to choose a cross-lingual pre-trained model with high accuracy.  
+The pre-training phase took more than 21.5 days when it was stopped for the purpose of fine-tuning, there was no early-sopping and the change in validation accuracy was as low as 0.002. Since the pre-training phase on monolingual dataset was computationally expensive and had low accuracy, it was decided to choose a cross-lingual pre-trained model. Therefore, the fine-tuning for this model was also stopped before it was finished.    
 
-## The result of pre-trained XLSR model   
+## The result of the pre-trained XLSR model   
 
 
 ```{r wer37, fig.align = 'center', echo=F, fig.cap="Training Loss, Validation Loss, and WER of Training + Validation Datasets"}
@@ -741,7 +745,7 @@ knitr::include_graphics("WER36.53.png")
 Figure \ref{fig:WER36.53} shows the word error rate with 250 warmup steps, *3e-4* learning rate, batch size of 8, gradient accumulation of 8 steps, and we evaluate the model every 400 steps.  
 
 
-```{r sample_prediction, fig.align = 'center', echo=F, fig.cap="Sample Prediction with 0.365 WER"}
+```{r sample_prediction, fig.align = 'center', echo=F, fig.cap="Sample Prediction with 0.369 WER"}
 knitr::include_graphics("sample_prediction.png")
 ```
 
@@ -766,7 +770,7 @@ Performing a pre-training task on a single language model with single input lang
 
 Moreover, the process of having pre-trained models for each language for the purpose of fine-tuning these models on languages they were pre-trained on is time-consuming and resource intensive. It could be seen from our pre-training phase that more than 21 days were taken to pre-train our model (21.5 days) without convergence. Despite the Nvidia Tesla G80 GPU that was used for pre-training.   
 
-Solving a contrastive task in our pre-training phase combined with a diacritics removal task for Arabic language, has resulted in higher accuracy compared to other models trained by solving the same contrastive task, but with different diacritics removal techniques. There are many diacritics in Arabic language that need to be removed before in the preprocessing step before doing any model training, these diacritics could be difficult to number, and that is the reason we saw different models scoring low WER despite them having excellent hyperparameter tuning. For instance, one of the models uploaded on huggingface.co is reported to have had WER of 46.77 % [@Huggingface_othrif], however, when checked with our diacritics removal script, the model's accuracy increased, with a WER of 45.5.  
+Fine-tuning our model on the same dataset (Mozilla Common Voice) with different diacritics removal techniques and model parameters, has resulted in a different dictionary and a higher accuracy compared to other models fine-tuned on the same datasets, but with different diacritics removal techniques. There are many diacritics in Arabic language that need to be removed before in the preprocessing step before doing any model training, these diacritics could be difficult to number, and that is the reason we saw different models scoring low WER despite them having excellent hyperparameter tuning. For instance, one of the models uploaded on huggingface.co is reported to have had WER of 46.77 % [@Huggingface_othrif], however, when checked with our diacritics removal script, the model's accuracy increased, with a WER of 45.5.  
 
 Diacritcs can be confusing and using them might lead to low accuracy during model fine-tuning because they are neither letters nor spaces, when they were included in the fine-tuning phase they were considered by the model as language letters in the language dictionary. This dictionary is stored by the framework for comparing the correct characters and assigning codes to them. Therefore, the removal of all diacritics from the transcript files resulted in higher accuracy and low WER.  
 
@@ -787,7 +791,8 @@ In this project, an Automatic Speech Recognition (ASR) system was implemented ba
 
 The Word Error Rate (WER) of the fine-tuned *XLSR* with *wav2vec 2.0* on Arabic language was initially 54.00 %. After fine-tuning the model parameters, we obtained a WER of 36.69 % which placed this model third in a competition conducted by *huggingface* company's competition. It is now being used and has been downloaded 32 times from the official website of *huggingface* (https://huggingface.co/mohammed/ar).  
 
-The first research question is about the scarcity of transcribed data, which is addressed by open-source project such as *Mozilla Common Voice* that enables communities to participate in creating speech corpus for different languages. The speech data used in this study was obtained from *Mozilla Common Voice*. Additionally, finding a huge amount of labeled data has become no longer a concern given *self-supervised learning* (SSL). SSL, which is our second question of this research, has proven successful when dealing with unlabeled Arabic speech data. Cross-lingual speech representation (XLSR) was used in this research to utilize unlabeled data from multiple languages in the pre-training phase and then fine-tune our model on labeled Arabic language data. Using pre-trained models for Automatic Speech Recognition, and fine-tuning them on labeled Arabic speech data, was more efficient and timesaving than pre-training a monolingual model. The third question is addressed by proving that by using XLSR model with as few as 42 hours of labeled data we could achieve a WER of 36.69 %, while it was time and resource-consuming, with only 58% accuracy for pre-training, when pre-training a monolingual model.  
+The first research question is about the scarcity of transcribed data, which is addressed by open-source project such as *Mozilla Common Voice* that enables communities to participate in creating speech corpus for different languages. The speech data used in this study was obtained from *Mozilla Common Voice*. Additionally, finding a huge amount of labeled data has become no longer a concern given *self-supervised learning* (SSL). SSL, which is our second question of this research, has proven successful when dealing with unlabeled Arabic speech data. Cross-lingual speech representation (XLSR) was used in this research to utilize unlabeled data from multiple languages in the pre-training phase and then fine-tune our model on labeled Arabic language data. Using pre-trained models for Automatic Speech Recognition, and fine-tuning them on labeled Arabic speech data, was more efficient and timesaving than pre-training a monolingual model. The third question takes the model accuracy given the amount of labeled data used, and we proved
+that by using as few as 42 hours of labeled data we could achieve a WER of 36.69 %.  
 
 
 \newpage  
