@@ -706,9 +706,6 @@ XLSR-Wav2Vec2 model has many hyperparameters to tune, nonetheless, a small numbe
 **gradient_accumulation_steps** is the number of updates steps to accumulate the gradients for, before performing a backward/update pass.  
 **save_total_limit** is the number of checkpoints to save.  
 
-Hugging Face, Inc. conducted a community fine-tuning competition on XLSR-Wav2Vec2 for 60 languages. There was an XLSR model that was pre-trained on 53 languages, and one dataset for each language that should be used by all participants in that language. Mozilla Common Voice dataset was the dataset chosen by Hugging Face for Arabic language, which is the same dataset used for pre-training the monolingual model. The dataset is divided into training, validation, and testing datasets. The training and validation datasets were used for fine-tuning the XLSR model, and the testing dataset was used for testing the model.    
-   
-
 
 \newpage
 
@@ -783,13 +780,15 @@ knitr::include_graphics("WER_after_800.png")
 
 The model that scored the best accuracy used *transliteration*, which is the process of changing a word from the alphabet of its original language (source language) to another language (target language). By performing transliteration on Arabic (changing all its letters to their corresponding English letters), avoidance of diacritics problem is for certain as we no longer have diacritics. However, having manually removed diacritics from Arabic has also resulted in high accuracy compared to other models.  
 
+This model could have been improved and other models could have been developed with different number of network layers, different vector quantization techniques, or different language models. But due to the limited time allocated for this thesis it was not possible to use other models.  
+
 \newpage  
 
 # Conclusion  
 
 In this project, an Automatic Speech Recognition (ASR) system was implemented based on a small amount of data for Arabic language. Self-supervised learning (SSL) was the main means used for conducting this research. A pre-training phase was, first, carried out on 42 hours of unlabeled Arabic language dataset from *Mozilla Common Voice* for the purpose of fine-tuning this pre-trained model on labeled Arabic data, the pre-training took more than 21 days without finishing. Due to this, attention was instead directed on using a pre-trained model available online. This study, secondly, took advantage of an unsupervised cross-lingual speech representation (XLSR) that had been pre-trained on multiple languages, including Arabic, and then this pre-trained model was fine-tuned on Arabic language. The unsupervised XLSR was pre-trained on 53 different languages and built on *wav2vec 2.0* which solves a contrastive task for masked latent speech representations. This model was proven to be significantly more efficient than the monolingual pre-training.  
 
-The Word Error Rate (WER) of the fine-tuned *XLSR* with *wav2vec 2.0* on Arabic language was initially 54.00 %. After fine-tuning the model parameters, we obtained a WER of 36.69 % which placed this model third in a competition conducted by *huggingface* company's competition. It is now being used and has been downloaded 32 times from the official website of *huggingface* (https://huggingface.co/mohammed/ar).  
+The Word Error Rate (WER) of the fine-tuned *XLSR* with *wav2vec 2.0* on Arabic language was initially 54.00 %. After fine-tuning the model parameters, we obtained a WER of 36.69 % which placed this model third in *huggingface* company's Arabic language models. It is now being used and has been downloaded 32 times from the official website of *huggingface* (https://huggingface.co/mohammed/ar).  
 
 The first research question is about the scarcity of transcribed data, which is addressed by open-source project such as *Mozilla Common Voice* that enables communities to participate in creating speech corpus for different languages. The speech data used in this study was obtained from *Mozilla Common Voice*. Additionally, finding a huge amount of labeled data has become no longer a concern given *self-supervised learning* (SSL). SSL, which is our second question of this research, has proven successful when dealing with unlabeled Arabic speech data. Cross-lingual speech representation (XLSR) was used in this research to utilize unlabeled data from multiple languages in the pre-training phase and then fine-tune our model on labeled Arabic language data. Using pre-trained models for Automatic Speech Recognition, and fine-tuning them on labeled Arabic speech data, was more efficient and timesaving than pre-training a monolingual model. The third question takes the model accuracy given the amount of labeled data used, and we proved
 that by using as few as 42 hours of labeled data we could achieve a WER of 36.69 %.  
